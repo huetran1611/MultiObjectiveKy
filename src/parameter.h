@@ -9,7 +9,7 @@ int crossoverMod=50;
 int num_cus=20;
 int num_trucks=2;
 int num_drones=2;
-#define max_node num_cus+num_trucks+num_cus*num_drones-1
+
 #define droneservetime 30
 #define truckservetime 60
 #define populationSize   200
@@ -41,7 +41,7 @@ string outputlog;
 string outputgraph;
 string outputtblog;
 vector<Customer> customers;
-vector<vector<double>> M(max_node);
+vector<vector<double>> M(10000);
 int total_node;
 int canuseddrone;
 int drone_max_tracks;

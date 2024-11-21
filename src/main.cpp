@@ -48,6 +48,7 @@ int main(int argc,char *argv[]){
     input();
     drone_max_tracks=(int)(canuseddrone/num_drones)+1;
     total_node=num_cus+num_trucks+drone_max_tracks*num_drones-1;
+    //cout<<drone_max_tracks<<" "<<total_node<<endl;
     initMatrix(); 
     vector<Individual> population;
     population.clear();
