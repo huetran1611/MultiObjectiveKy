@@ -5,18 +5,23 @@
 #include "gaBase.h"
 #include "dominationCheck.h"
 #include "output.h"
+#include <ctime>
 using namespace std;
 extern int total_node;
 
 extern vector<vector<double>> M;
-vector<Individual> NSGA2(vector<Individual> &defaultpop,int option){
+vector<Individual> NSGA2(vector<Individual> &defaultpop){
+    time_t start,end;
+    int end_iter;
+    time(&start);
     vector<Individual> pareto;
+    int option=0;
     int havetabu=0;
     int haveadaptive=0;
     int nochangeStreak=0;
     int tabu_perform=0;
     sort(defaultpop.begin(),defaultpop.end(),comparefit1);
-    outputLog(0,defaultpop);
+    //outputLog(0,defaultpop);
     vector<Individual>population=defaultpop;
     vector<Individual> newPopulation;
     int nRe[100][3];
@@ -144,44 +149,41 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop,int option){
         //cout<<newPopulation.size()<<endl;
         //nRe[i%crossoverMod][crossoverAlgo]=nReward;
         //nPe[i%crossoverMod][crossoverAlgo]=nPenalty;
-        if(option>0){
+        /*if(option>0){
             haveadaptive=1;
             //cout<<haveadaptive<<" "<<crossoverMod<<endl;
             if((i+1)%crossoverMod==0){
                 updateCrossoverProportion(nRe,nPe);
                 //cout<<crossoverProportion[0]<<" "<<crossoverProportion[1]<<" "<< crossoverProportion[2]<<endl;
             }
-        }
+        }*/
         //int popusize=200-(i/2);
-        int max_tabu_iter;
-        if(option%3==0)max_tabu_iter=10;
-        else if(option%3==1) max_tabu_iter=15;
-        else max_tabu_iter=20;
+        
         
         int popusize=200;
-        if(option>5){
+        
             if(nochangeStreak%30==0&&nochangeStreak>0){
             //cout<<i<<"!"<<endl;
-                std::ofstream outputFile;
-                outputFile.open(outputtblog, std::ios::app);
-                outputFile<<"Generation "<<i<<" :";
-                outputFile<<pareto.size()<<endl;
+                //std::ofstream outputFile;
+                //outputFile.open(outputtblog, std::ios::app);
+                //outputFile<<"Generation "<<i<<" :";
+                //outputFile<<pareto.size()<<endl;
                 for(int f=0;f<pareto.size();f++){
-                    if(pareto[f].tabusearch>1)continue;
-                    outputFile<<"Solution "<<f+1<<":"<<endl;
+                    //if(pareto[f].tabusearch>1)continue;
+                    //outputFile<<"Solution "<<f+1<<":"<<endl;
                     vector<Individual>Taburesult;
                     Taburesult.clear();
                     Taburesult=tabu_search(pareto[f].route,max_tabu_iter);
                     for(int k=0;k<Taburesult.size();k++){
                         newPopulation.push_back(Taburesult[k]);
                     }
-                    pareto[f].tabusearch+=1;
+                    //pareto[f].tabusearch+=1;
                 }
             //cout<<newPopulation.size()<<endl;
             //nochangeStreak=0;
             //population=selectNewPopulation(newPopulation,popusize,1);
             }
-        }
+    
        // cout<<newPopulation.size()<<endl;
 
         population=selectNewPopulation(newPopulation,popusize);
@@ -240,7 +242,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop,int option){
         double bestobj1=population[0].fitness1;
         sort(population.begin(),population.end(),comparefit2);
         double bestobj2=population[0].fitness2;
-        outputGraphdata(bestobj1,bestobj2,i);
+        //outputGraphdata(bestobj1,bestobj2,i);
         
         vector<vector<int>> paretonumlayer=fast_non_dominated_sort(population);
         vector<int> paretonum;
@@ -255,9 +257,9 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop,int option){
         }
         if(improveInpareto>0)nochangeStreak=0;    
         else nochangeStreak+=1;
-        if(nochangeStreak>60){cout<<i<<" ";break;}
+        if(nochangeStreak>60){end_iter=i+1;break;}
         sort(pareto.begin(),pareto.end(),comparefit1);
-        outputLog(i,pareto);
+        //outputLog(i,pareto);
         if(paretonum.size()!=pareto.size()){
             vector<Individual> tester;
             tester.clear();
@@ -271,17 +273,17 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop,int option){
                 //population=selectNewPopulation(population,popusize);
             }
             sort(tester.begin(),tester.end(),comparefit1);
-            outputLog(i,tester);
+            //outputLog(i,tester);
         }
         //outputLog(i,population);
-        if(i==maxGenerations-1)cout<<i<<" ";
-        if(i==1499&&option<9)break;
-        
+        time(&end);
+        if(double(end-start)>1800){end_iter=i+1; break;}
+        if(i==maxGenerations-1) end_iter=maxGenerations;
     }
     
     sort(pareto.begin(),pareto.end(),comparefit1);
-    output(pareto);
-    outputpareto(pareto);
+    output(pareto,double(end-start),end_iter);
+    //outputpareto(pareto);
     //cout<<havetabu<<" "<<haveadaptive<<endl;
     return pareto;
 }

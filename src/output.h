@@ -30,8 +30,10 @@ void outputLog(int gen,vector<Individual> pareto){
     outputFile<<endl;
     outputFile.close();
 }
-void output( vector<Individual> pareto){
+void output( vector<Individual> pareto,double time,int end_iter){
     std::ofstream outputFile(outputfilename); // Open the file for writing
+    outputFile<<"Time:"<<time<<endl;
+    outputFile<<"Last Iter:"<<end_iter<<endl;
     outputFile<<pareto.size()<<endl;
     for(int i=0;i<pareto.size();i++){
         for(int j=0;j<total_node;j++){

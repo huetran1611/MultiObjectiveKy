@@ -6,14 +6,14 @@
 #include "struct.h"
 using namespace std;
 int crossoverMod=50;
-#define num_cus 20
-#define num_trucks 2
-#define num_drones 2
+int num_cus=20;
+int num_trucks=2;
+int num_drones=2;
 #define max_node num_cus+num_trucks+num_cus*num_drones-1
 #define droneservetime 30
 #define truckservetime 60
 #define populationSize   200
-#define maxGenerations   2000
+int maxGenerations=2000;
 #define MUTATION_RATE   0.05
 #define CROSSOVER_RATE   0.9
 #define VmaxTruck 15.557
@@ -33,7 +33,7 @@ string txt=".txt";
 string testcount="1";
 string problem="20.20.2";//4
 string resultsrc="../result9/";
-string inputfile="../data/random_data/"+problem+txt;
+string inputfile="./data/random_data/"+problem+txt;
 string outputfilename;
 string outputparetofilename;
 string outputparetoselectionfilename;
@@ -45,6 +45,7 @@ vector<vector<double>> M(max_node);
 int total_node;
 int canuseddrone;
 int drone_max_tracks;
+int max_tabu_iter;
 double maxobj1=1000000000;
 double maxobj2=1000000000;
 double minobj1=0;
