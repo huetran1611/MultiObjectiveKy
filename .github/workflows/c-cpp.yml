@@ -29,8 +29,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        key: [123, 456, 789]
-
+        a: [50.10.1,50.10.2,50.10.3,50.10.4,50.20.1,50.20.2]
+        b: [1500, 2000]
+        c: [10,20,30]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -44,4 +45,9 @@ jobs:
     - name: Run executable
       run: |
         chmod +x ./src/main.exe
-        ./src/main.exe
+        ./src/main.exe ${{ matrix.a }} ${{ matrix.b }} ${{ matrix.c }}
+    - name: Upload result
+      uses: actions/upload-artifact@v4
+      with:
+        name: result-${{ matrix.a }} ${{ matrix.b }} ${{ matrix.c }}
+        path: ./result.txt
