@@ -31,7 +31,8 @@ void outputLog(int gen,vector<Individual> pareto){
     outputFile.close();
 }
 void output( vector<Individual> pareto,double time,int end_iter){
-    std::ofstream outputFile(outputfilename); // Open the file for writing
+    std::ofstream outputFile;
+    outputFile.open(outputfilename, std::ios::app); // Open the file for writing
     outputFile<<"Time:"<<time<<endl;
     outputFile<<"Last Iter:"<<end_iter<<endl;
     outputFile<<pareto.size()<<endl;
@@ -49,6 +50,7 @@ void output( vector<Individual> pareto,double time,int end_iter){
         outputFile<<endl;
         outputFile << pareto[i].fitness1 <<" "<<pareto[i].fitness2<< endl;
     }
+    outputFile<<endl;
     outputFile.close();
 }
 void outputpareto( vector<Individual> pareto){

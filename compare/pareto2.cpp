@@ -117,6 +117,14 @@ void readDataFromTextFile(const string& filename)
     }
     string line;
     getline(file,line);
+    int time;
+    istringstream iss2(line);
+    if(iss2>>time){}
+
+    getline(file,line);
+    int last_iter;
+    istringstream iss2(line);
+    if(iss2>>time){}
     
     getline(file,line);
     istringstream iss1(line);

@@ -54,7 +54,7 @@ int main(int argc,char *argv[]){
     //population=selectPopulation(populationSize);
 
     //testcount=to_string(testcountint);
-    for(int testcountint=1;testcountint<=1;testcountint++){
+    for(int testcountint=1;testcountint<=10;testcountint++){
         testcount=to_string(testcountint);
         srand(time(nullptr));
         population=selectPopulation(populationSize);
@@ -65,7 +65,7 @@ int main(int argc,char *argv[]){
         minobj2=0;
         crossoverMod=50;
         crossoverProportion={1.0/3.0,1.0/3.0,1.0/3.0};
-        outputfilename="./result"+testcount+txt;
+        outputfilename="./result"+txt;
         minobj1=population[0].fitness1;
         maxobj1=population[0].fitness1;
         minobj2=population[0].fitness2;
