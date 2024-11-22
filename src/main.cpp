@@ -35,11 +35,16 @@ int main(int argc,char *argv[]){
         num_cus=20;
         num_trucks=2;
         num_drones=2;
-    }else{
+    }else if(stoi(token)==50){
         num_cus=50;
         num_trucks=3;
         num_drones=3;
+    }else if(stoi(token)==100){
+        num_cus=100;
+        num_trucks=4;
+        num_drones=4;
     }
+
     inputfile="./data/random_data/"+instance+txt;
     maxGenerations=stoi(argv[2]);
     max_tabu_iter=stoi(argv[3]);
