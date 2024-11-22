@@ -324,12 +324,14 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
             obj1List.push_back(oriTrackres.first);
             obj2List.push_back(oriTrackres.second);    
         }
-
+        Individual newsol;
+        TabuRecord newrecord;
         for(int i=0;i<num_drones+num_trucks;i++){
             for(int j=0;j<Tracks[i].size();j++){
                 for(int k=0;k<num_drones+num_trucks;k++){
                     for(int l=0;l<Tracks[k].size();l++){
                         //cout<<"t1"<<endl;
+                        
                         vector<int> temp=current_solution;
                         pair<double,double> fitafter;
                         pair<double,double> fitchange;
@@ -350,7 +352,6 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
                                 sort(obj1new.begin(),obj1new.end());
                                 fitafter.first=obj1new.back();
                                 if(fitbefore.first-fitafter.first>1e-3||fitbefore.second-fitafter.second>1e-3){
-                                    Individual newsol;
                                     if(type==0) temp=swap20(temp,endpoint,i,j,k,l);
                                     else if (type==1) temp=swap21(temp,endpoint,i,j,k,l);
                                     else if (type==2) temp=swap10TB(temp,endpoint,i,j,k,l);
@@ -362,7 +363,7 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
                                     newsol.tabusearch=0;
                                     newsol.localsearch=0;
                                     neighbors.push_back(newsol);
-                                    TabuRecord newrecord;
+                                    //TabuRecord newrecord;
                                     newrecord.indi=newsol;
                                     newrecord.record.start[0]=Tracks[i][j];
                                     if(type<2)newrecord.record.start[1]=Tracks[i][j+1];
