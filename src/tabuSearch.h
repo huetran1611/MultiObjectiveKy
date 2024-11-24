@@ -157,14 +157,17 @@ pair<double,double> swapTabu(vector<vector<int>> Tracks,int iTrack,int position,
 }
 int pos1=0;
 int pos2=0;
+int s2=0;
+int s1=0;
+int s=0;
 bool checkswaptabu20(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpoint, int Tracknum,int position,int swapTrack,int swapPo){
     if(position==Tracks[Tracknum].size()-1)return false;
     if(swapTrack>=num_trucks&&customers[Tracks[Tracknum][position]].OnlyByTruck==1)return false;
     if(swapTrack>=num_trucks&&customers[Tracks[Tracknum][position+1]].OnlyByTruck==1)return false;
     if(Tracks[Tracknum][position]>num_cus) return false;
     if(Tracks[Tracknum][position+1]>num_cus) return false;
-    int s2=temp[endpoint[Tracknum]+1+position+1];
-    int s1=temp[endpoint[Tracknum]+1+position];
+    s2=temp[endpoint[Tracknum]+1+position+1];
+    s1=temp[endpoint[Tracknum]+1+position];
     pos1=endpoint[Tracknum]+1+position;
     pos2=endpoint[swapTrack]+1+swapPo;
     if(pos2==pos1||pos2==pos1+1) return false;
@@ -192,7 +195,7 @@ bool checkswaptabu21(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpo
     if(Tracks[Tracknum][position]>num_cus) return false;
     if(Tracks[Tracknum][position+1]>num_cus) return false;
     if(Tracks[swapTrack][swapPo]>num_cus) return false;
-    int s=temp[endpoint[Tracknum]+1+position+1];
+    s=temp[endpoint[Tracknum]+1+position+1];
     pos1=endpoint[Tracknum]+1+position;
     pos2=endpoint[swapTrack]+1+swapPo;
     if(pos1==pos2||pos1+1==pos2)return false;
@@ -213,7 +216,7 @@ bool checkswaptabu10(vector<int> temp,vector<vector<int>>Tracks,vector<int> endp
     if(swapTrack>=num_trucks&&customers[Tracks[Tracknum][position]].OnlyByTruck==1)return false;
     pos1=endpoint[Tracknum]+1+position;
     pos2=endpoint[swapTrack]+1+swapPo;
-    int s=temp[pos1];
+    s=temp[pos1];
     if(pos2==pos1) return false;
     else if(pos2>pos1){
         temp.insert(temp.begin()+pos2+1,s);
@@ -250,8 +253,8 @@ bool checkswaptabu(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpoin
     else return checkswaptabu11(temp1,Tracks,endpoint,Tracknum,position,swapTrack,swapPo);
 }
 vector<int> swap20(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
-    int s2=temp[endpoint[Tracknum]+1+position+1];
-    int s1=temp[endpoint[Tracknum]+1+position];
+    s2=temp[endpoint[Tracknum]+1+position+1];
+    s1=temp[endpoint[Tracknum]+1+position];
     pos1=endpoint[Tracknum]+1+position;
     pos2=endpoint[swapTrack]+1+swapPo;
     if(pos2>pos1+1){
@@ -268,7 +271,7 @@ vector<int> swap20(vector<int> temp,vector<int>endpoint,int Tracknum,int positio
     return temp;
 }
 vector<int> swap21(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
-    int s=temp[endpoint[Tracknum]+1+position+1];
+    s=temp[endpoint[Tracknum]+1+position+1];
     pos1=endpoint[Tracknum]+1+position;
     pos2=endpoint[swapTrack]+1+swapPo;
     swap(temp[pos1],temp[pos2]);
@@ -285,7 +288,7 @@ vector<int> swap21(vector<int> temp,vector<int>endpoint,int Tracknum,int positio
 vector<int> swap10TB(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
     pos1=endpoint[Tracknum]+1+position;
     pos2=endpoint[swapTrack]+1+swapPo;
-    int s=temp[pos1];
+    s=temp[pos1];
     if(pos2>pos1){
         temp.insert(temp.begin()+pos2+1,s);
         temp.erase(temp.begin()+pos1);
@@ -388,8 +391,8 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
                                     if(type<2)newrecord.record.start[1]=Tracks[i][j+1];
                                     else newrecord.record.start[1]=-1;
                                     newrecord.record.end=Tracks[k][l];
-                                    int pos1=endpoint[i]+1+j;
-                                    int pos2=endpoint[k]+1+l;
+                                    pos1=endpoint[i]+1+j;
+                                    pos2=endpoint[k]+1+l;
                                     if(type==0||type==2){
                                         if(pos1>0)newrecord.record.front[0]=current_solution[pos1-1];
                                         else newrecord.record.front[0]=-1;
@@ -476,7 +479,8 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
         outputFile<<"Time:"<<duration.count()<<"ms"<<endl;
-
+        neighbors.clear();
+        taburecord.clear();
         //if(noimprovecount>15)return Tabupareto;
 	}
    // cout<<Tabupareto.size()<<endl;
