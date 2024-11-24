@@ -27,7 +27,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
     int nRe[100][3];
     int nPe[100][3];
     
-    
+    int tbtime=0;
     for (int i = 0; i < maxGenerations; i++) {
         //if(i==0)cout<<crossoverProportion[0]<<" "<<crossoverProportion[1]<<" "<< crossoverProportion[2]<<endl;
         if(i%crossoverMod==0){
@@ -157,6 +157,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
                 //outputFile.open(outputtblog, std::ios::app);
                 //outputFile<<"Generation "<<i<<" :";
                 //outputFile<<pareto.size()<<endl;
+                tbtime++;
                 vector<Individual>Taburesult;
                 for(int f=0;f<pareto.size();f++){
                     //if(pareto[f].tabusearch>1)continue;
@@ -220,7 +221,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
     }
     
     sort(pareto.begin(),pareto.end(),comparefit1);
-    output(pareto,double(end-start),end_iter);
+    output(pareto,double(end-start),end_iter,tbtime);
     //outputpareto(pareto);
     //cout<<havetabu<<" "<<haveadaptive<<endl;
     return pareto;

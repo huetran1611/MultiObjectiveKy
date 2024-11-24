@@ -155,7 +155,8 @@ pair<double,double> swapTabu(vector<vector<int>> Tracks,int iTrack,int position,
     else if(type==2) return swapTabu10(Tracks,iTrack,position,kTrack,swapPo);
     else return swapTabu11(Tracks,iTrack,position,kTrack,swapPo);
 }
-
+int pos1=0;
+int pos2=0;
 bool checkswaptabu20(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpoint, int Tracknum,int position,int swapTrack,int swapPo){
     if(position==Tracks[Tracknum].size()-1)return false;
     if(swapTrack>=num_trucks&&customers[Tracks[Tracknum][position]].OnlyByTruck==1)return false;
@@ -164,8 +165,8 @@ bool checkswaptabu20(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpo
     if(Tracks[Tracknum][position+1]>num_cus) return false;
     int s2=temp[endpoint[Tracknum]+1+position+1];
     int s1=temp[endpoint[Tracknum]+1+position];
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     if(pos2==pos1||pos2==pos1+1) return false;
     else if(pos2>pos1+1){
         temp.insert(temp.begin()+endpoint[swapTrack]+swapPo+1,s2);
@@ -192,8 +193,8 @@ bool checkswaptabu21(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpo
     if(Tracks[Tracknum][position+1]>num_cus) return false;
     if(Tracks[swapTrack][swapPo]>num_cus) return false;
     int s=temp[endpoint[Tracknum]+1+position+1];
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     if(pos1==pos2||pos1+1==pos2)return false;
     swap(temp[pos1],temp[pos2]);
     if(pos1>pos2){
@@ -210,8 +211,8 @@ bool checkswaptabu21(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpo
 bool checkswaptabu10(vector<int> temp,vector<vector<int>>Tracks,vector<int> endpoint, int Tracknum,int position,int swapTrack,int swapPo){
     if(Tracks[Tracknum][position]>num_cus) return false;
     if(swapTrack>=num_trucks&&customers[Tracks[Tracknum][position]].OnlyByTruck==1)return false;
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     int s=temp[pos1];
     if(pos2==pos1) return false;
     else if(pos2>pos1){
@@ -231,16 +232,18 @@ bool checkswaptabu11(vector<int> temp,vector<vector<int>>Tracks,vector<int> endp
     if(Tracknum>=num_trucks&&customers[Tracks[swapTrack][swapPo]].OnlyByTruck==1)return false;
     if(Tracks[Tracknum][position]>num_cus) return false;
     if(Tracks[swapTrack][swapPo]>num_cus) return false;
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     swap(temp[pos1],temp[pos2]);
     if(!checkroute(temp)) return false;
 
     return true;
 }
+vector<int> temp1;
 bool checkswaptabu(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpoint, int Tracknum,int position,int swapTrack,int swapPo,int type){
     if(Tracks[Tracknum].size()==0)return false;
-    vector<int> temp1=temp;
+    temp1.clear();
+    temp1=temp;
     if(type==0) return checkswaptabu20(temp1,Tracks,endpoint,Tracknum,position,swapTrack,swapPo);
     else if(type==1) return checkswaptabu21(temp1,Tracks,endpoint,Tracknum,position,swapTrack,swapPo);
     else if(type==2) return checkswaptabu10(temp1,Tracks,endpoint,Tracknum,position,swapTrack,swapPo);
@@ -249,8 +252,8 @@ bool checkswaptabu(vector<int> temp,vector<vector<int>>Tracks,vector<int>endpoin
 vector<int> swap20(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
     int s2=temp[endpoint[Tracknum]+1+position+1];
     int s1=temp[endpoint[Tracknum]+1+position];
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     if(pos2>pos1+1){
         temp.insert(temp.begin()+pos2+1,s2);
         temp.insert(temp.begin()+pos2+1,s1);
@@ -266,8 +269,8 @@ vector<int> swap20(vector<int> temp,vector<int>endpoint,int Tracknum,int positio
 }
 vector<int> swap21(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
     int s=temp[endpoint[Tracknum]+1+position+1];
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     swap(temp[pos1],temp[pos2]);
     if(pos1>pos2){
         temp.erase(temp.begin()+pos1+1);
@@ -280,8 +283,8 @@ vector<int> swap21(vector<int> temp,vector<int>endpoint,int Tracknum,int positio
     return temp;
 }
 vector<int> swap10TB(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     int s=temp[pos1];
     if(pos2>pos1){
         temp.insert(temp.begin()+pos2+1,s);
@@ -293,8 +296,8 @@ vector<int> swap10TB(vector<int> temp,vector<int>endpoint,int Tracknum,int posit
     return temp;
 }
 vector<int> swap11TB(vector<int> temp,vector<int>endpoint,int Tracknum,int position,int swapTrack,int swapPo){
-    int pos1=endpoint[Tracknum]+1+position;
-    int pos2=endpoint[swapTrack]+1+swapPo;
+    pos1=endpoint[Tracknum]+1+position;
+    pos2=endpoint[swapTrack]+1+swapPo;
     swap(temp[pos1],temp[pos2]);
     return temp;
 }
@@ -342,13 +345,14 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
         vector<double> obj1new;
         pair<double,double> fitafter;
         pair<double,double> fitchange;
+        vector<int> temp;
         for(int i=0;i<num_drones+num_trucks;i++){
             for(int j=0;j<Tracks[i].size();j++){
                 for(int k=0;k<num_drones+num_trucks;k++){
                     for(int l=0;l<Tracks[k].size();l++){
                         //cout<<"t1"<<endl;
-                        
-                        vector<int> temp=current_solution;
+                        temp.clear();
+                        temp=current_solution;
                         //pair<double,double> fitafter;
                         //pair<double,double> fitchange;
                         fitchange.first=0;
