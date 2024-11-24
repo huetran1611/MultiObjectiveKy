@@ -299,6 +299,8 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
     int noimprovecount=0;
     std::ofstream outputFile;
     outputFile.open(outputtblog, std::ios::app);
+    vector<Individual> neighbors;
+    vector<TabuRecord> taburecord;
 	for (int iter = 0; iter < max_iterations; iter++) {
 
         outputFile<<"Iteration "<<iter<<":"<<endl;
@@ -308,9 +310,10 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
         }
         outputFile<<endl;
         auto start = std::chrono::high_resolution_clock::now();
-        vector<Individual> neighbors;
+        //vector<Individual> neighbors;
         neighbors.clear();
-        vector<TabuRecord> taburecord;
+        taburecord.clear();
+        //vector<TabuRecord> taburecord;
         int type=rand()%4;
         pair<double,double> fitbefore=calculatefitness(current_solution);
         vector<vector<int>> Tracks=splitTracks(current_solution).first;
@@ -326,6 +329,7 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
         }
         Individual newsol;
         TabuRecord newrecord;
+        vector<double> obj1new;
         for(int i=0;i<num_drones+num_trucks;i++){
             for(int j=0;j<Tracks[i].size();j++){
                 for(int k=0;k<num_drones+num_trucks;k++){
@@ -343,7 +347,7 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
                             if(fitchange.first!=0&&fitchange.second!=0){
                                 if(i!=k) fitafter.second=fitbefore.second+fitchange.second-obj2List[i]-obj2List[k];
                                 else fitafter.second=fitbefore.second+fitchange.second-obj2List[i];
-                                vector<double> obj1new;
+                                //vector<double> obj1new;
                                 obj1new.clear();
                                 for(int t=0;t<obj1List.size();t++){
                                     if(t!=i&&t!=k)obj1new.push_back(obj1List[t]);
