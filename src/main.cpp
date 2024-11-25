@@ -83,7 +83,7 @@ int main(int argc,char *argv[]){
 
     //testcount=to_string(testcountint);
     
-    for(int testcountint=1;testcountint<=3;testcountint++){
+    for(int testcountint=1;testcountint<=10;testcountint++){
         srand(time(nullptr));
         population=selectPopulation(populationSize);
     //for(int i=6;i<12;i++){
