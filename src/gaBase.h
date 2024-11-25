@@ -92,9 +92,6 @@ vector<int> generateSol2(){
             if(group[i].size()<2) check =false;
         }
     }
-    
-    
-
     vector<vector<int>> trucks(num_trucks);
     vector<vector<vector<int>>>drones(num_drones);
     for(int i=0;i<num_trucks;i++){
@@ -191,6 +188,141 @@ vector<int> generateSol2(){
     }
     tour.pop_back();
 
+    return tour;
+}
+int mintime(vector<double> times){
+    int minNum=0;
+    double minT=times[0];
+    for(int i=1;i<times.size();i++){
+        if(times[i]<minT){minT=times[i];minNum=i;}
+    }
+    return minNum;
+}
+vector<int> generateSol3(){
+    vector<int>  group[num_trucks];
+    bool check=false;
+    while(!check){
+        for(int i=0;i<num_trucks;i++){
+            group[i].clear();
+        }
+        check=true;
+        for(int i=1;i<=num_cus;i++){
+            int sel=rand()%num_trucks;
+            group[sel].push_back(i);
+        };
+        for(int i=0;i<num_trucks;i++){
+            if(group[i].size()<2) check =false;
+        }
+    }
+    vector<vector<int>> trucks(num_trucks);
+    vector<double> droneTimes;
+    droneTimes.assign(num_drones,0.0);
+    vector<vector<vector<int>>>drones(num_drones);
+    for(int i=0;i<num_trucks;i++){
+        int chosenDrone;
+        if(i<num_drones)chosenDrone=i;
+        else chosenDrone=mintime(droneTimes);
+        cout<<"iter "<<i<< endl;
+        int droneable=checkDroneable(group[i]);
+        vector<int> truckRoute;
+        truckRoute.clear();
+        vector<int> droneRoute;
+        droneRoute.clear();
+        if(i>=num_drones)droneRoute=drones[chosenDrone].back();
+        int truckRand=rand()%(group[i].size());
+        truckRoute.push_back(group[i][truckRand]);
+        if(customers[truckRoute.back()].OnlyByTruck==0)droneable-=1;
+        group[i].erase(group[i].begin()+truckRand);
+        int droneRand;
+        double droneTime=droneTimes[chosenDrone];
+        if(droneable!=0&&i<num_drones){
+            do{
+                droneRand=rand()%(group[i].size());
+            }while(customers[group[i][droneRand]].OnlyByTruck!=0);
+            droneRoute.push_back(group[i][droneRand]);
+            group[i].erase(group[i].begin()+droneRand);
+            droneTime=calDrone(0,droneRoute.back());
+            droneable-=1;
+        }
+        double truckTime=calTruck(0,truckRoute[0],0.0);
+        while(group[i].size()!=0){
+            if(droneTime<truckTime&&droneable!=0&&drones[chosenDrone].size()<drone_max_tracks){
+                int cur;
+                if(droneRoute.size()!=0)cur=droneRoute.back();
+                else cur=0;
+                vector<int> sel=distanceRanking(cur,group[i]);
+                bool fin=false;
+                int cnt=0;
+                
+                for(int cnt=0;cnt<sel.size();cnt++){
+                    if(customers[sel[cnt]].OnlyByTruck==0){
+                        droneRoute.push_back(sel[cnt]);
+                        if(feasibleDroneroute(droneRoute)==0){fin=true;break;}
+                        else droneRoute.pop_back();
+                    } 
+                }
+                if(fin){
+                    int po=find(group[i].begin(),group[i].end(),droneRoute.back())-group[i].begin();
+                    group[i].erase(group[i].begin()+po);
+                    droneTime+=calDrone(cur,droneRoute.back());
+                    droneable-=1;
+                }
+                else{
+                    if(i>=num_drones)drones[chosenDrone].pop_back();
+                    drones[chosenDrone].push_back(droneRoute);
+                    if(cur!=0){
+                        droneTime+=calDrone(cur,0)-droneservetime;
+                    }
+                    droneRoute.clear();
+                }
+            }
+            else {
+                int trucksel=distanceRanking(truckRoute.back(),group[i])[0];
+                truckTime=calTruck(truckRoute.back(),trucksel,truckTime);
+                truckRoute.push_back(trucksel);
+                if(customers[truckRoute.back()].OnlyByTruck==0)droneable-=1;
+                int po=find(group[i].begin(),group[i].end(),trucksel)-group[i].begin();
+                group[i].erase(group[i].begin()+po);
+            }
+        }
+        if(droneRoute.size()>0)drones[chosenDrone].push_back(droneRoute);
+        trucks[i]=truckRoute;
+        truckTime=calTruck(truckRoute.back(),0,truckTime)-truckservetime;
+        droneTimes[chosenDrone]=droneTime;
+        for(int t=0;t<num_drones;t++){
+            cout<<"drone "<<t<<endl;
+            for(int x=0;x<drones[t].size();x++){
+                for(int y=0;y<drones[t][x].size();y++){
+                    cout<<drones[t][x][y]<<" ";
+                }
+                cout<<endl;
+            }
+        }
+    }
+    vector<int> tour;
+    for(int i=0;i<num_trucks;i++){
+        for(int j=0;j<trucks[i].size();j++){
+            tour.push_back(trucks[i][j]);   
+        }
+        if(i<num_trucks-1)tour.push_back(num_cus+i+1);
+    }
+    tour.push_back(0);
+    for(int i=0;i<num_drones;i++){
+        for(int j=0;j<drones[i].size();j++){
+            for(int k=0;k<drones[i][j].size();k++){
+                tour.push_back(drones[i][j][k]);
+            }
+            tour.push_back(num_cus+num_trucks+j+i*drone_max_tracks);
+        }
+        for(int j=drones[i].size();j<drone_max_tracks;j++){
+            tour.push_back(num_cus+num_trucks+j+i*drone_max_tracks);
+        }
+    }
+    tour.pop_back();
+    vector<vector<int>> Tracks=splitTracks(tour).first;
+    for(int i=num_trucks;i<num_drones+num_trucks;i++){
+        cout<<TrackResult(Tracks[i],i).first<<" "<<droneTimes[i-num_trucks]<<endl;
+    }
     return tour;
 }
 vector<int> generatesol(){

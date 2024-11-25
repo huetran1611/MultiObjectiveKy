@@ -25,6 +25,13 @@ extern int maxGenerations;
 extern int num_cus;
 extern int num_trucks;
 extern int num_drones;
+int findi(int a,vector<int> test){
+    int num=0;
+    for(int i=0;i<test.size();i++){
+        if(a==test[i])num++;
+    }
+    return num;
+}
 int main(int argc,char *argv[]){
     srand(time(nullptr));
     string instance=string(argv[1]);
@@ -44,6 +51,11 @@ int main(int argc,char *argv[]){
         num_trucks=4;
         num_drones=4;
     }
+    else if(stoi(token)==200){
+        num_cus=200;
+        num_trucks=10;
+        num_drones=4;
+    }
 
     inputfile="./data/random_data/"+instance+txt;
     maxGenerations=stoi(argv[2]);
@@ -53,13 +65,24 @@ int main(int argc,char *argv[]){
     input();
     drone_max_tracks=(int)(canuseddrone/num_drones)+1;
     total_node=num_cus+num_trucks+drone_max_tracks*num_drones-1;
-    //cout<<drone_max_tracks<<" "<<total_node<<endl;
-    initMatrix(); 
+    cout<<drone_max_tracks<<" "<<total_node<<endl;
+    initMatrix();
+    /*
+    vector<int>test=generateSol3();
+    cout<<checkroute(test)<<" "<<test.size()<<endl;
+    for(int i=0;i<total_node;i++){
+        int a=findi(i,test);
+        if(a!=1) cout<<i<<endl;
+    }
+    /*for(int i=0;i<test.size();i++){
+        cout<<test[i]<<" ";
+    }*/
     vector<Individual> population;
     population.clear();
-    //population=selectPopulation(populationSize);
+    population=selectPopulation(populationSize);
 
     //testcount=to_string(testcountint);
+    
     for(int testcountint=1;testcountint<=3;testcountint++){
         srand(time(nullptr));
         population=selectPopulation(populationSize);
@@ -104,22 +127,9 @@ int main(int argc,char *argv[]){
             paretoRecord.normFit2=(pareto[j].fitness2-minfit2)/(maxfit2-minfit2);
             paretoRecords.push_back(paretoRecord);
         }*/  
-        /*
-        for(int j=0;j<3;j++){
-            for(int k=0;k<paretosize;k++){
-                paretoRecords[k].criteria=paretoRecords[k].normFit1*(j+1)*0.25+paretoRecords[k].normFit2*(3-j)*0.25;
-            }
-            sort(paretoRecords.begin(),paretoRecords.end(),compareCriteria);
-            for(int k=0;k<paretosize;k++){
-                paretoRecords[k].ranking+=k;
-            }
-            outputParetoResult(paretoRecords,j+1);
-        }
-        sort(paretoRecords.begin(),paretoRecords.end(),compareRanking);
-        outputParetoResult(paretoRecords,0);
-        */
+        
 
-    //}
+    //}*/
     }
     
     return 0;
