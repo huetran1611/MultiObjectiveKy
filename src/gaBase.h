@@ -219,16 +219,20 @@ vector<int> generateSol3(){
     droneTimes.assign(num_drones,0.0);
     vector<vector<vector<int>>>drones(num_drones);
     for(int i=0;i<num_trucks;i++){
+        
         int chosenDrone;
         if(i<num_drones)chosenDrone=i;
         else chosenDrone=mintime(droneTimes);
-        cout<<"iter "<<i<< endl;
+        
         int droneable=checkDroneable(group[i]);
         vector<int> truckRoute;
         truckRoute.clear();
         vector<int> droneRoute;
         droneRoute.clear();
-        if(i>=num_drones)droneRoute=drones[chosenDrone].back();
+        if(i>=num_drones){
+            droneRoute=drones[chosenDrone].back();
+            drones[chosenDrone].pop_back();
+        }
         int truckRand=rand()%(group[i].size());
         truckRoute.push_back(group[i][truckRand]);
         if(customers[truckRoute.back()].OnlyByTruck==0)droneable-=1;
@@ -268,7 +272,6 @@ vector<int> generateSol3(){
                     droneable-=1;
                 }
                 else{
-                    if(i>=num_drones)drones[chosenDrone].pop_back();
                     drones[chosenDrone].push_back(droneRoute);
                     if(cur!=0){
                         droneTime+=calDrone(cur,0)-droneservetime;
@@ -285,19 +288,14 @@ vector<int> generateSol3(){
                 group[i].erase(group[i].begin()+po);
             }
         }
-        if(droneRoute.size()>0)drones[chosenDrone].push_back(droneRoute);
+        if(droneRoute.size()>0){
+            drones[chosenDrone].push_back(droneRoute);
+            droneTime+=calDrone(drones[chosenDrone].back().back(),0)-droneservetime;
+        }
+        droneTime=droneTime-calDrone(drones[chosenDrone].back().back(),0)+droneservetime;
         trucks[i]=truckRoute;
         truckTime=calTruck(truckRoute.back(),0,truckTime)-truckservetime;
         droneTimes[chosenDrone]=droneTime;
-        for(int t=0;t<num_drones;t++){
-            cout<<"drone "<<t<<endl;
-            for(int x=0;x<drones[t].size();x++){
-                for(int y=0;y<drones[t][x].size();y++){
-                    cout<<drones[t][x][y]<<" ";
-                }
-                cout<<endl;
-            }
-        }
     }
     vector<int> tour;
     for(int i=0;i<num_trucks;i++){
@@ -319,10 +317,6 @@ vector<int> generateSol3(){
         }
     }
     tour.pop_back();
-    vector<vector<int>> Tracks=splitTracks(tour).first;
-    for(int i=num_trucks;i<num_drones+num_trucks;i++){
-        cout<<TrackResult(Tracks[i],i).first<<" "<<droneTimes[i-num_trucks]<<endl;
-    }
     return tour;
 }
 vector<int> generatesol(){
@@ -392,7 +386,7 @@ vector<Individual> selectPopulation(int size) {
         vector<int>route;
         //route=generateSol2();
         //if(i>=size/2&&type==1)route=generatesol();
-        route=generateSol2();
+        route=generateSol3();
         if(route.size()!=total_node) cout<<"err"<<endl;
         
         indi.route=route;

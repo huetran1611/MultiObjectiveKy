@@ -25,13 +25,6 @@ extern int maxGenerations;
 extern int num_cus;
 extern int num_trucks;
 extern int num_drones;
-int findi(int a,vector<int> test){
-    int num=0;
-    for(int i=0;i<test.size();i++){
-        if(a==test[i])num++;
-    }
-    return num;
-}
 int main(int argc,char *argv[]){
     srand(time(nullptr));
     string instance=string(argv[1]);
@@ -65,21 +58,11 @@ int main(int argc,char *argv[]){
     input();
     drone_max_tracks=(int)(canuseddrone/num_drones)+1;
     total_node=num_cus+num_trucks+drone_max_tracks*num_drones-1;
-    cout<<drone_max_tracks<<" "<<total_node<<endl;
+    //cout<<drone_max_tracks<<" "<<total_node<<endl;
     initMatrix();
-    /*
-    vector<int>test=generateSol3();
-    cout<<checkroute(test)<<" "<<test.size()<<endl;
-    for(int i=0;i<total_node;i++){
-        int a=findi(i,test);
-        if(a!=1) cout<<i<<endl;
-    }
-    /*for(int i=0;i<test.size();i++){
-        cout<<test[i]<<" ";
-    }*/
     vector<Individual> population;
     population.clear();
-    population=selectPopulation(populationSize);
+    //population=selectPopulation(populationSize);
 
     //testcount=to_string(testcountint);
     
