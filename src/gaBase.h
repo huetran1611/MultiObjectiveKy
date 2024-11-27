@@ -272,7 +272,7 @@ vector<int> generateSol3(){
                     droneable-=1;
                 }
                 else{
-                    drones[chosenDrone].push_back(droneRoute);
+                    if(droneRoute.size()>0)drones[chosenDrone].push_back(droneRoute);
                     if(cur!=0){
                         droneTime+=calDrone(cur,0)-droneservetime;
                     }

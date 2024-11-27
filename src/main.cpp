@@ -62,6 +62,7 @@ int main(int argc,char *argv[]){
     initMatrix();
     vector<Individual> population;
     population.clear();
+    
     //population(populationSize);
 
     //testcount=to_string(testcountint);

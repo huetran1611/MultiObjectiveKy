@@ -6,6 +6,24 @@
 using namespace std;
 extern vector<Customer> customers;
 extern int canuseddrone;
+bool checkcustomer(int a){
+    double totalweight=customers[a].demand;
+    if(totalweight>capacityC)return false;
+    double weight=0;
+    double totalenergy=0;
+    double xDiff = customers[0].x - customers[a].x;
+    double yDiff = customers[0].y - customers[a].y;
+    double distance = sqrt(pow(xDiff, 2) + pow(yDiff, 2));
+    for(int i=0;i<2;i++){ 
+        double energypersec=gama+betaB*weight;
+        double time=distance/cruiseSpeed;
+    
+        totalenergy+=(takeoffTime+landingTime+time)*energypersec;
+        if(totalenergy> batteryPower) return false;
+        weight=totalweight;
+    }
+    return true;
+}
 void input(){
     
     Customer depot;
@@ -39,5 +57,10 @@ void input(){
         b.TruckServiceTime=a[4];
         b.DroneServiceTime=a[5];
         customers.push_back(b);
+    }
+    for(int i=1;i<=num_cus;i++){
+        if(customers[i].OnlyByTruck==0){
+            if(!checkcustomer(i)){customers[i].OnlyByTruck=1;canuseddrone--;}
+        }
     }
 }
