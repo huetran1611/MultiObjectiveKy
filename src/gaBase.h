@@ -292,7 +292,7 @@ vector<int> generateSol3(){
             drones[chosenDrone].push_back(droneRoute);
             droneTime+=calDrone(drones[chosenDrone].back().back(),0)-droneservetime;
         }
-        droneTime=droneTime-calDrone(drones[chosenDrone].back().back(),0)+droneservetime;
+        if(drones[chosenDrone].size()!=0)droneTime=droneTime-calDrone(drones[chosenDrone].back().back(),0)+droneservetime;
         trucks[i]=truckRoute;
         truckTime=calTruck(truckRoute.back(),0,truckTime)-truckservetime;
         droneTimes[chosenDrone]=droneTime;
@@ -381,14 +381,14 @@ vector<int> generatesol(){
 }
 vector<Individual> selectPopulation(int size) {
     vector<Individual> population;
+    Individual indi;
     for (int i = 0; i < size; i++) {
-        Individual indi;
         vector<int>route;
         //route=generateSol2();
         //if(i>=size/2&&type==1)route=generatesol();
         route=generateSol3();
         if(route.size()!=total_node) cout<<"err"<<endl;
-        
+        if(!checkroute(route))cout<<"err1"<<endl;
         indi.route=route;
         pair<double,double> fit=calculatefitness(route);
         indi.fitness1=fit.first;
