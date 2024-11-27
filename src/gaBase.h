@@ -229,7 +229,7 @@ vector<int> generateSol3(){
         truckRoute.clear();
         vector<int> droneRoute;
         droneRoute.clear();
-        if(i>=num_drones){
+        if(i>=num_drones&&drones[chosenDrone].size()!=0){
             droneRoute=drones[chosenDrone].back();
             drones[chosenDrone].pop_back();
         }
