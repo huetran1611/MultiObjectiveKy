@@ -150,7 +150,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
         
         
         int popusize=200;
-        
+        //if(false){
             if(nochangeStreak%30==0&&nochangeStreak>0){
             //cout<<i<<"!"<<endl;
                 //std::ofstream outputFile;
@@ -164,7 +164,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
                     //outputFile<<"Solution "<<f+1<<":"<<endl;
                     //vector<Individual>Taburesult;
                     Taburesult.clear();
-                    Taburesult=tabu_search(pareto[f].route,max_tabu_iter);
+                    if(max_tabu_iter>0) Taburesult=tabu_search(pareto[f].route,max_tabu_iter);
                     for(int k=0;k<Taburesult.size();k++){
                         newPopulation.push_back(Taburesult[k]);
                     }
@@ -174,7 +174,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
             //nochangeStreak=0;
             //population=selectNewPopulation(newPopulation,popusize,1);
             }
-    
+        //}
        // cout<<newPopulation.size()<<endl;
 
         population=selectNewPopulation(newPopulation,popusize);
