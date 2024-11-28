@@ -1,3 +1,5 @@
+#ifndef OUTPUT_H
+#define OUTPUT_H
 #include <fstream>
 #include <iostream>
 #include "parameter.h"
@@ -119,3 +121,4 @@ void outputParetoResult(vector<ParetoRecord> paretoRecords,int k){
         outputFile << paretoRecords[i].indi.fitness1 <<" "<<paretoRecords[i].indi.fitness2<< endl;
     }
 }
+#endif
