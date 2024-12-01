@@ -6,6 +6,7 @@
 using namespace std;
 extern vector<Customer> customers;
 extern int canuseddrone;
+extern double timeLimit;
 bool checkcustomer(int a){
     double totalweight=customers[a].demand;
     if(totalweight>capacityC)return false;
@@ -61,6 +62,18 @@ void input(){
     for(int i=1;i<=num_cus;i++){
         if(customers[i].OnlyByTruck==0){
             if(!checkcustomer(i)){customers[i].OnlyByTruck=1;canuseddrone--;}
+        }
+    }
+}
+void inputTimeLimit(string instance){
+    ifstream inputfile("./src/time.txt");
+    string line;
+    for(int i=0;i<56;i++){
+        getline(inputfile,line);
+        if(line.find(instance)!=string::npos){
+            int po=line.find(";");
+            string time=line.substr(po+1);
+            timeLimit=stod(time);
         }
     }
 }

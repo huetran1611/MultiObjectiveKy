@@ -197,7 +197,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
         }
         if(improveInpareto>0)nochangeStreak=0;    
         else nochangeStreak+=1;
-        if(nochangeStreak>60){end_iter=i+1;break;}
+        //if(nochangeStreak>60){end_iter=i+1;break;}
         sort(pareto.begin(),pareto.end(),comparefit1);
         if(paretonum.size()!=pareto.size()){
             vector<Individual> tester;
@@ -216,7 +216,7 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
         }
         //outputLog(i,population);
         time(&end);
-        if(double(end-start)>1800){end_iter=i+1; break;}
+        if(double(end-start)>timeLimit){end_iter=i+1; break;}
         if(i==maxGenerations-1) end_iter=maxGenerations;
     }
     

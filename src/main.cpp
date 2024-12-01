@@ -49,6 +49,8 @@ int main(int argc,char *argv[]){
         num_trucks=10;
         num_drones=4;
     }
+    inputTimeLimit(instance);
+    //cout<<timeLimit<<endl;
 
     inputfile="./data/random_data/"+instance+txt;
     maxGenerations=stoi(argv[2]);
