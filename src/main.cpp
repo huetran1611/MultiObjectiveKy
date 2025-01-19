@@ -97,11 +97,11 @@ int main(int argc,char *argv[]){
         populationcopy=population;
         vector<Individual> pareto;
         pareto.clear();
-        //vector<int> init=generateSol3();
-        //pareto=tabu_search2(init,max_tabu_iter);
-        pareto= NSGA2(populationcopy);;
+        vector<int> init=generateSol3();
+        pareto=tabu_search2(init,max_tabu_iter);
+        //pareto= NSGA2(populationcopy);;
         /*
-        
+
         /int paretosize=pareto.size();
         double minfit1=pareto[0].fitness1;
         double minfit2=pareto[paretosize-1].fitness2;
