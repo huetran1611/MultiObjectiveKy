@@ -645,11 +645,11 @@ vector<Individual> tabu_search2( const vector<int> &initial_solution,int max_ite
         outputFile<<"Time:"<<duration.count()<<"ms"<<endl;
         //if(noimprovecount>100){end_iter=iter+1;break;}
         time(&endtb);
-        if(double(endtb-starttb)>timeLimit){end_iter=iter+1;break;}
+        if(double(endtb-starttb)>=timeLimit){end_iter=iter+1;break;}
         if(iter==max_iterations-1)end_iter=max_iterations;
 	}
     time(&endtb);
-    output(Tabupareto,double(endtb-starttb),end_iter,tbtime,end_iter);
+    output(Tabupareto,double(endtb-starttb),end_iter,tbtime,end_iter-noimprovecount);
    // cout<<Tabupareto.size()<<endl;
 	return Tabupareto;
 }
