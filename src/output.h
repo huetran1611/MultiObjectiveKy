@@ -38,7 +38,7 @@ void output( vector<Individual> pareto,double time,int end_iter,int tbtime,int l
     outputFile<<"Time:"<<time<<endl;
     outputFile<<"Last Iter:"<<end_iter<<endl;
     outputFile<<"Last Update:"<<last_update<<endl;
-    outputFile<<"Tabu:"<<tbtime<<endl;
+    outputFile<<"Last Time:"<<tbtime<<endl;
     outputFile<<pareto.size()<<endl;
     for(int i=0;i<pareto.size();i++){
         for(int j=0;j<total_node;j++){
