@@ -168,6 +168,8 @@ vector<Individual> NSGA2(vector<Individual> &defaultpop){
                     for(int k=0;k<Taburesult.size();k++){
                         newPopulation.push_back(Taburesult[k]);
                     }
+                    time(&end);
+                    if(double(end-start)>=timeLimit)break;
                     //pareto[f].tabusearch+=1;
                 }
             //cout<<newPopulation.size()<<endl;
