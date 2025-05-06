@@ -53,8 +53,10 @@ int main(int argc,char *argv[]){
     //cout<<timeLimit<<endl;
 
     inputfile="./data/random_data/"+instance+txt;
-    maxGenerations=stoi(argv[2]);
+    //maxGenerations=stoi(argv[2]);
+    maxGenerations=10000000;
     max_tabu_iter=stoi(argv[3]);
+    int crsselect=stoi(argv[2]);
     time_t start,end;
     ios_base::sync_with_stdio(false);
     input();
@@ -68,7 +70,7 @@ int main(int argc,char *argv[]){
     //population(populationSize);
 
     //testcount=to_string(testcountint);
-    for(int testcountint=1;testcountint<=2;testcountint++){
+    for(int testcountint=1;testcountint<=10;testcountint++){
         srand(time(nullptr));
         population=selectPopulation(populationSize);
     //for(int i=6;i<12;i++){
@@ -77,7 +79,9 @@ int main(int argc,char *argv[]){
         minobj1=0;
         minobj2=0;
         crossoverMod=50;
-        crossoverProportion={1.0/3.0,1.0/3.0,1.0/3.0};
+        crossoverProportion={1.0/3.0,1.0/3.0,1.0/3.0,1.0/3.0};
+        crossoverProportion[crsselect]=0;
+        cout<<crossoverProportion[0]<<" "<<crossoverProportion[1]<<" "<<crossoverProportion[2]<<" "<<crossoverProportion[3]<<endl;
         outputfilename="./result"+txt;
         minobj1=population[0].fitness1;
         maxobj1=population[0].fitness1;
