@@ -25,6 +25,7 @@ extern int maxGenerations;
 extern int num_cus;
 extern int num_trucks;
 extern int num_drones;
+extern int popusize;
 int main(int argc,char *argv[]){
     srand(time(nullptr));
     string instance=string(argv[1]);
@@ -51,15 +52,16 @@ int main(int argc,char *argv[]){
     }
     inputTimeLimit(instance);
     //cout<<timeLimit<<endl;
-
     inputfile="./data/random_data/"+instance+txt;
-    //maxGenerations=stoi(argv[2]);
-    maxGenerations=10000000;
+    //maxGenerations=stoi(argv[2]);  
+    maxGenerations=100000;
+    int crsSelect=stoi(argv[2]);
+    //popusize=stoi(argv[2]);
     max_tabu_iter=stoi(argv[3]);
-    int crsselect=stoi(argv[2]);
     time_t start,end;
     ios_base::sync_with_stdio(false);
     input();
+    //cout<<1<<endl;
     drone_max_tracks=(int)(canuseddrone/num_drones)+1;
     total_node=num_cus+num_trucks+drone_max_tracks*num_drones-1;
     //cout<<drone_max_tracks<<" "<<total_node<<endl;
@@ -72,7 +74,9 @@ int main(int argc,char *argv[]){
     //testcount=to_string(testcountint);
     for(int testcountint=1;testcountint<=10;testcountint++){
         srand(time(nullptr));
-        population=selectPopulation(populationSize);
+        population=selectPopulation(popusize);
+        
+        //cout<<1<<endl;
     //for(int i=6;i<12;i++){
         maxobj1=1000000000;
         maxobj2=1000000000;
@@ -80,8 +84,7 @@ int main(int argc,char *argv[]){
         minobj2=0;
         crossoverMod=50;
         crossoverProportion={1.0/3.0,1.0/3.0,1.0/3.0,1.0/3.0};
-        crossoverProportion[crsselect]=0;
-        cout<<crossoverProportion[0]<<" "<<crossoverProportion[1]<<" "<<crossoverProportion[2]<<" "<<crossoverProportion[3]<<endl;
+        crossoverProportion[crsSelect]=0;
         outputfilename="./result"+txt;
         minobj1=population[0].fitness1;
         maxobj1=population[0].fitness1;
@@ -102,9 +105,9 @@ int main(int argc,char *argv[]){
         pareto.clear();
         //vector<int> init=generateSol3();
         //pareto=tabu_search2(init,max_tabu_iter);
-        pareto= NSGA2(populationcopy);
+        pareto= NSGA2(populationcopy);;
         /*
-        /int paretosize=pareto.size();
+        int paretosize=pareto.size();
         double minfit1=pareto[0].fitness1;
         double minfit2=pareto[paretosize-1].fitness2;
         double maxfit1=pareto[paretosize-1].fitness1;

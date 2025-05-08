@@ -466,9 +466,9 @@ vector<Individual> tabu_search( const vector<int> &initial_solution,int max_iter
 vector<Individual> tabu_search2( const vector<int> &initial_solution,int max_iterations)
 { // Added const qualifier
     time_t starttb,endtb;
+    double tbtime=0;
     time(&starttb);
     int end_iter=0;
-    double tbtime=0;
 	vector<int> current_solution = initial_solution;
 	vector<MoveRecord> tabu_list[4];
     vector<Individual>Tabupareto;
@@ -645,11 +645,12 @@ vector<Individual> tabu_search2( const vector<int> &initial_solution,int max_ite
         outputFile<<"Time:"<<duration.count()<<"ms"<<endl;
         //if(noimprovecount>100){end_iter=iter+1;break;}
         time(&endtb);
-        if(double(endtb-starttb)>=timeLimit){end_iter=iter+1;break;}
+        if(double(endtb-starttb)>timeLimit){end_iter=iter+1;break;}
+        //if(double(endtb-starttb)>1800){end_iter=iter+1;break;}
         if(iter==max_iterations-1)end_iter=max_iterations;
 	}
     time(&endtb);
-    output(Tabupareto,double(endtb-starttb),end_iter,tbtime,end_iter-noimprovecount);
+    output(Tabupareto,double(endtb-starttb),end_iter,0,tbtime,end_iter-noimprovecount);
    // cout<<Tabupareto.size()<<endl;
 	return Tabupareto;
 }

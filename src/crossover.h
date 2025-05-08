@@ -15,6 +15,57 @@ int crossoverSelection() {
     // In case of numerical issues, return the last index
     return rand()%3;
 }
+Individual CX(Individual parent1,Individual parent2){
+    Individual offspring;
+    int totalNodes= parent1.route.size();
+    // Initialize offspring with -1 to indicate unassigned positions
+    offspring.route.assign(totalNodes, -1);
+    vector<int> visited;
+    for(int i=0;i<totalNodes;i++){
+        visited.push_back(0);
+    }
+    int start=0;
+    int cycNo=0;
+    while (std::find(visited.begin(), visited.end(), 0) != visited.end()) {
+        if (visited[start]) {
+            start = std::find(visited.begin(), visited.end(), 0) - visited.begin();
+        }
+
+        int pos = start;
+        std::vector<int> cycle;
+
+        // Create the cycle starting from the start position
+        if(cycNo%2==0){
+            do {
+                cycle.push_back(pos);
+                visited[pos] = 1;
+                pos = std::find(parent1.route.begin(), parent1.route.end(), parent2.route[pos]) - parent1.route.begin();
+            } while (pos != start);
+        }
+        else{
+            do {
+                cycle.push_back(pos);
+                visited[pos] = 1;
+                pos = std::find(parent2.route.begin(), parent2.route.end(), parent1.route[pos]) - parent2.route.begin();
+            } while (pos != start);
+        }
+        // Use the cycle to create the offspring
+        for (int i = 0; i < cycle.size(); ++i) {
+            if (cycNo % 2 == 0) {
+                offspring.route[cycle[i]] = parent1.route[cycle[i]];
+            } else {
+                offspring.route[cycle[i]] = parent2.route[cycle[i]];
+            }
+        }
+        cycNo+=1;
+    }
+    
+    
+    offspring.route= repairposition(offspring.route);
+    offspring.route=repairroute(offspring.route);
+    visited.clear();
+    return offspring;
+}
 Individual OX(Individual parent1,Individual parent2){
     Individual offspring;
     int totalNodes= parent1.route.size();
@@ -187,58 +238,6 @@ Individual POS(Individual parent1,Individual parent2){
             visited[parent2.route[currentPos]]=1;
             currentPos++;
         }
-    }
-    
-    
-    offspring.route= repairposition(offspring.route);
-    offspring.route=repairroute(offspring.route);
-    visited.clear();
-    return offspring;
-}
-
-Individual CX(Individual parent1,Individual parent2){
-    Individual offspring;
-    int totalNodes= parent1.route.size();
-    // Initialize offspring with -1 to indicate unassigned positions
-    offspring.route.assign(totalNodes, -1);
-    vector<int> visited;
-    for(int i=0;i<totalNodes;i++){
-        visited.push_back(0);
-    }
-    int start=0;
-    int cycNo=0;
-    while (std::find(visited.begin(), visited.end(), 0) != visited.end()) {
-        if (visited[start]) {
-            start = std::find(visited.begin(), visited.end(), 0) - visited.begin();
-        }
-
-        int pos = start;
-        std::vector<int> cycle;
-
-        // Create the cycle starting from the start position
-        if(cycNo%2==0){
-            do {
-                cycle.push_back(pos);
-                visited[pos] = 1;
-                pos = std::find(parent1.route.begin(), parent1.route.end(), parent2.route[pos]) - parent1.route.begin();
-            } while (pos != start);
-        }
-        else{
-            do {
-                cycle.push_back(pos);
-                visited[pos] = 1;
-                pos = std::find(parent2.route.begin(), parent2.route.end(), parent1.route[pos]) - parent2.route.begin();
-            } while (pos != start);
-        }
-        // Use the cycle to create the offspring
-        for (int i = 0; i < cycle.size(); ++i) {
-            if (cycNo % 2 == 0) {
-                offspring.route[cycle[i]] = parent1.route[cycle[i]];
-            } else {
-                offspring.route[cycle[i]] = parent2.route[cycle[i]];
-            }
-        }
-        cycNo+=1;
     }
     
     
