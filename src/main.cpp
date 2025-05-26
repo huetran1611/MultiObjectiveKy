@@ -55,8 +55,8 @@ int main(int argc,char *argv[]){
     inputfile="./data/random_data/"+instance+txt;
     //maxGenerations=stoi(argv[2]);  
     maxGenerations=100000;
-    int crsSelect=stoi(argv[2]);
-    //popusize=stoi(argv[2]);
+    //int crsSelect=stoi(argv[2]);
+    popusize=stoi(argv[2]);
     max_tabu_iter=stoi(argv[3]);
     time_t start,end;
     ios_base::sync_with_stdio(false);
@@ -83,8 +83,8 @@ int main(int argc,char *argv[]){
         minobj1=0;
         minobj2=0;
         crossoverMod=50;
-        crossoverProportion={1.0/3.0,1.0/3.0,1.0/3.0,1.0/3.0};
-        crossoverProportion[crsSelect]=0;
+        crossoverProportion={1.0/3.0,1.0/3.0,1.0/3.0};
+        //crossoverProportion[crsSelect]=0;
         outputfilename="./result"+txt;
         minobj1=population[0].fitness1;
         maxobj1=population[0].fitness1;

@@ -253,7 +253,7 @@ Individual crossover(Individual &indi1, Individual &indi2, int selection){
     case 0: return PMX(indi1, indi2);
     case 1: return OX(indi1, indi2);
     case 2: return POS(indi1, indi2);
-    case 3: return CX(indi1, indi2);
+    //case 3: return CX(indi1, indi2);
     }
     return PMX(indi1,indi2);
 }
